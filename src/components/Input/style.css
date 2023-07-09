@@ -1,0 +1,21 @@
+.inputBox input:not(:placeholder-shown) ~ span,
+/* .inputBox input:valid ~ span, */
+.inputBox input:focus ~ span {
+    color: #00adb5;
+    transform: translateX(8px) translateY(-23px);
+    background-color: white;
+    padding-bottom: 0;
+    font-size: small;
+}
+
+.inputBox input:not(:placeholder-shown):invalid ~ span {
+    color: rgb(240, 84, 84);
+    /* background-color: rgb(240, 84, 84); */
+}
+.inputBox input:not(:placeholder-shown):invalid {
+    border-color: rgb(240, 84, 84);
+}
+
+.inputBox input:not(:placeholder-shown):invalid ~ span:after {
+    content: " / Không hợp lệ";
+}

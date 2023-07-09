@@ -1,6 +1,6 @@
 import React from "react";
-import {withRouter} from "../../common/with-route";
-const UserList = () => {
+import {withRouter} from "../../../common/with-route";
+const User_list = () => {
     return(
         <div className="container-fluid">
 
@@ -52,4 +52,4 @@ const UserList = () => {
     );
 };
 
-export default withRouter(UserList) ;
+export default withRouter(User_list) ;
