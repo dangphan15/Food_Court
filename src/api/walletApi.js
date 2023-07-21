@@ -21,7 +21,7 @@ export const walletApi = {
     },
 
     getWalletByCardId: (cardId) => {
-        return adminAxios.get(`/Wallet/GetWalletsByCardId/${cardId}?pageIndex=0&pageSize=1000`);
+        return adminAxios.get(`/Wallet/GetHistoryWalletsByCardId/${cardId}?pageIndex=0&pageSize=1000`);
     },
 
     addWallet: async (wallet) => {

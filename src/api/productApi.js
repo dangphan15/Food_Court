@@ -17,7 +17,7 @@ export const productApi = {
     },
 
     getProductByCateId: (shopCategoryId) => {
-        return adminAxios.get(`/Product/GetProductsByShopCategoryId/${shopCategoryId}?pageIndex=0&pageSize=1000`);
+        return adminAxios.get(`/Product/GetHistoryProductsByShopCategoryId/${shopCategoryId}?pageIndex=0&pageSize=1000`);
     },
 
     addProduct: async (product) => {

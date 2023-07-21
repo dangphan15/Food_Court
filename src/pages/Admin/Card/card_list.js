@@ -1,5 +1,5 @@
 import {Box, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
-import { useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import AppTable from "../../../components/Table";
 import { useGetCards } from "./api/hook";
@@ -9,6 +9,10 @@ import Swal from "sweetalert2";
 import Switch from "@mui/material/Switch";
 import {transactionCounterApi} from "../../../api/transactionCounterApi";
 import {cardTypeApi} from "../../../api/cardTypeApi";
+import {shopApi} from "../../../api/shopApi";
+import {CloudinaryImage} from "@cloudinary/url-gen";
+import {fill} from "@cloudinary/url-gen/actions/resize";
+import {AdvancedImage} from "@cloudinary/react";
 
 export function CardList() {
     const { data, error, loading } = useGetCards();
@@ -60,12 +64,46 @@ export function CardList() {
             />
         );
     };
+
+    const RenderCellComponent = ({ value }) => {
+        const [cardType, setCardType] = useState(null);
+        const [myImage, setMyImage] = useState();
+        useEffect(() => {
+            const fetchTransactionCounter = async () => {
+                try {
+                    const pro = await cardTypeApi.getCardTypeById(value);
+                    console.log(pro);
+                    setMyImage(new CloudinaryImage(pro.result.avatar, {cloudName: 'di7yhx8nt'}).resize(fill().width(50).height(50)));
+                } catch (error) {
+                    console.error("Error fetching transaction counter:", error);
+                }
+            };
+
+            fetchTransactionCounter();
+        }, [value]);
+
+        if (!myImage) {
+            // You can return a loading state or placeholder here while waiting for the data to load
+            return <div>Loading...</div>;
+        }
+
+        return (
+            <>
+                <AdvancedImage cldImg={myImage} />
+            </>
+        );
+    };
     const columns = useMemo(() => {
         return [
             { field: "cardNumber", headerName: "Card Number", width: 150},
             { field: "securityCode", headerName: "Security Code", width: 120 },
             { field: "expirationDate", headerName: "Expiration Date", width: 200 },
-            { field: "cardTypeId", headerName: "Rank", width: 200 },
+            {
+                field: "cardTypeId",
+                headerName: "Rank",
+                width: 100 ,
+                renderCell: RenderCellComponent,
+            },
             {
                 field: "isDeleted",
                 headerName: "Status",

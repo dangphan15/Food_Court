@@ -31,7 +31,7 @@ export const shopApi = {
     },
 
     getShopCateByShopId: (shopId) => {
-        return adminAxios.get(`ShopCategory/GetShopCategoriesByShopId/${shopId}?pageIndex=0&pageSize=1000`);
+        return adminAxios.get(`/ShopCategory/GetHistoryShopCategoriesByShopId/${shopId}?pageIndex=0&pageSize=1000`);
     },
 
     getShopCateByName: (categoryName) => {
