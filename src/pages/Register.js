@@ -34,12 +34,12 @@ export default function SignUp() {
         console.log(input);
         const FetchUser = async () => {
             try {
-                dispatch(USER_REQUEST());
-                userApi.register(input)
-                    .then(() => navigate(`/login`, { state: { alertRegister: true } }));
+                 dispatch(USER_REQUEST());
+                 await userApi.register(input)
+                    .then(() => navigate(`/login`, { state: { alertRegister: true } }))
             } catch (error) {
-                const errorMessage = getErrorMessageFromServer(error);
-                setSignUpErrorMessage(errorMessage);
+                console.log(error.response.data.message)
+                setSignUpErrorMessage(error.response.data.message);
                 // dispatch(USER_LOGIN_FAIL(errorMessage));
             }
         };

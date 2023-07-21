@@ -53,6 +53,9 @@ import {UserList} from "./pages/Admin/User/user_list";
 import {EditUser} from "./pages/Admin/User/detail";
 import {CreateUser} from "./pages/Admin/User/create";
 import {ChangePassword} from "./pages/ChangePassword";
+import {UserOrderDetailList} from "./pages/User/OrderDetail/order_detail_list";
+import {UserEditOrder} from "./pages/User/Order/detail";
+import {UserOrderList} from "./pages/User/Order/order_list";
 
 function App() {
     const userAccount = useSelector(selectUser);
@@ -206,25 +209,6 @@ function App() {
                                         index={true}
                                     />
                                 </Route>
-                                <Route path="/orders" element={<Outlet/>}>
-                                    <Route
-                                        path=""
-                                        element={<OrderList/>}
-                                        index={true}
-                                    />
-                                    <Route path=":orderId/orderDetails/" element={<Outlet/>}>
-                                        <Route
-                                            path=""
-                                            element={<OrderDetailList/>}
-                                            index={true}
-                                        />
-                                    </Route>
-                                    <Route
-                                        path="edit/:orderId"
-                                        element={<EditOrder/>}
-                                        index={true}
-                                    />
-                                </Route>
                                 <Route path="/users" element={<Outlet/>}>
                                     <Route
                                         path=""
@@ -299,6 +283,25 @@ function App() {
                                     <Route
                                         path="create"
                                         element={<UserCreateShop/>}
+                                    />
+                                </Route>
+                                <Route path="/orders" element={<Outlet/>}>
+                                    <Route
+                                        path=""
+                                        element={<UserOrderList/>}
+                                        index={true}
+                                    />
+                                    <Route path=":orderId/orderDetails/" element={<Outlet/>}>
+                                        <Route
+                                            path=""
+                                            element={<UserOrderDetailList/>}
+                                            index={true}
+                                        />
+                                    </Route>
+                                    <Route
+                                        path="edit/:orderId"
+                                        element={<UserEditOrder/>}
+                                        index={true}
                                     />
                                 </Route>
                             </Route>

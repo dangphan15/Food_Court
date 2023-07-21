@@ -16,6 +16,11 @@ export const orderApi = {
         return adminAxios.get(`/OrderDetail/GetHistoryOrderDetailByOrderId/${orderId}/orderItems?pageIndex=0&pageSize=1000`);
     },
 
+    getAllOrdersByUserId: (userId) => {
+        console.log(userId);
+        return adminAxios.get(`/Order/GetOrdersByUserId/${userId}?pageIndex=0&pageSize=1000`);
+    },
+
     getSalesReportByEachMonth: () => {
         return adminAxios.get(`/SalesReport/GetSalesReportByEachMonth`);
     },

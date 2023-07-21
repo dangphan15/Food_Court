@@ -67,13 +67,15 @@ export default function Login() {
             try {
                 dispatch(USER_LOGIN_REQUEST());
                 response = await userApi.login(input)
+                console.log(response)
                 localStorage.setItem("token", JSON.stringify(response.result.token));
                 dispatch(USER_LOGIN_SUCCESS(response.result));
                 navigate("/");
             } catch (error) {
                 setIsLoginSuccess(false);
-                setLoginErrorMessage(response.message);
-                dispatch(USER_LOGIN_FAIL(response.message));
+                console.log(error.response.data.message)
+                setLoginErrorMessage(error.response.data.message);
+                dispatch(USER_LOGIN_FAIL(error.response.data.message));
             }
         };
         fetchUser();
