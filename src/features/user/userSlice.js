@@ -3,14 +3,17 @@ import {convertTokenToObject, getTokenDataFromLocalStorage} from "../../utils/se
 
 const initialState = {
     token: getTokenDataFromLocalStorage(),
-    userAccountInfor: [],
-    isloggedInSuccess: false,
+    userAccountInfor: convertTokenToObject(),
 };
 
 export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+        USER_REQUEST: (state) => {
+            state.loading = true;
+        },
+
         USER_LOADING_REQUEST: (state) => {
             state.loading = true;
         },
@@ -31,8 +34,9 @@ export const userSlice = createSlice({
         },
 
         USER_LOGIN_SUCCESS: (state, action) => {
-            state.token = action.payload;
+            state.token = action.payload.token;
             state.userAccountInfor = convertTokenToObject();
+            state.role = action.payload.role;
             state.isloggedInSuccess = true;
             state.loading = false;
         },
@@ -46,6 +50,7 @@ export const userSlice = createSlice({
         USER_LOGOUT_SUCCESS: (state) => {
             state.token = null;
             state.userAccountInfor = null;
+            state.role = null;
             state.loading = false;
             state.isloggedOutSuccess = true;
         },
@@ -62,6 +67,7 @@ export const userSlice = createSlice({
 });
 
 export const {
+    USER_REQUEST,
     USER_LOADING_REQUEST,
     USER_LOADING_ALL_SUCCESS,
     USER_LOADING_FAIL,

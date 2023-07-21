@@ -30,6 +30,7 @@ export function EditShop() {
         { location: 'VN', label: 'VN' },
         { location: 'UK', label: 'UK' },
         { location: 'US', label: 'US' },
+        { location: 'Australia', label: 'Australia' },
     ];
     const fields = useMemo(() => {
         return [

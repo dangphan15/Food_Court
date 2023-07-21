@@ -21,6 +21,7 @@ export function CreateShop() {
     { location: 'VN', label: 'VN' },
     { location: 'UK', label: 'UK' },
     { location: 'US', label: 'US' },
+    { location: 'Australia', label: 'Australia' },
   ];
 
   const fields = useMemo(() => {
@@ -61,9 +62,6 @@ export function CreateShop() {
 
   const onSubmit = (values) => {
     const data = {
-      email : values.email,
-      userName : values.userName,
-      password : values.password,
       shopName : values.shopName,
       location : values.location
     };

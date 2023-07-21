@@ -15,7 +15,7 @@ const adminAxios = axios.create({
 });
 adminAxios.interceptors.request.use(
     (config) => {
-        config.headers["Authorization"] = getTokenDataFromLocalStorage();
+        config.headers["Authorization"] = "Bearer " + getTokenDataFromLocalStorage();
         return config;
     },
     (error) => {

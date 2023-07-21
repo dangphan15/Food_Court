@@ -17,7 +17,7 @@ export function TransactionCounterList() {
     const CellSwitch = ({ value, row }) => {
         const [isChecked, setIsChecked] = useState(!value)
         const handleChange = (e) => {
-            const id = row.id;
+            const id = row.transactionCounterId;
             const newChecked = e.target.checked;
             Swal.fire({
                 title: " Delete item",
@@ -74,7 +74,7 @@ export function TransactionCounterList() {
                 }
             },
             {
-                field: "id",
+                field: "transactionCounterId",
                 headerName: "",
                 width: 200,
                 renderCell: ({ value }) => {
@@ -166,7 +166,7 @@ export function TransactionCounterList() {
                         paginationMode="client"
                         onPaginationModelChange={setPaginationModel}
                         paginationTotalRows={data.length}
-                        getRowId={(row) => row.id}
+                        getRowId={(row) => row.transactionCounterId}
                     />
                 </Paper>
             </Grid>

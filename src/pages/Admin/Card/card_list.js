@@ -64,7 +64,6 @@ export function CardList() {
         return [
             { field: "cardNumber", headerName: "Card Number", width: 150},
             { field: "securityCode", headerName: "Security Code", width: 120 },
-            { field: "points", headerName: "Points", width: 80 },
             { field: "expirationDate", headerName: "Expiration Date", width: 200 },
             { field: "cardTypeId", headerName: "Rank", width: 200 },
             {

@@ -8,10 +8,13 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Switch from '@mui/material/Switch';
 import {shopApi} from "../../../api/shopApi";
 import Swal from "sweetalert2";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../../features/user/userSlice";
 
 export function ShopList() {
     const { data, error, loading } = useGetShops();
     const navigate = useNavigate();
+    const user = useSelector(selectUser);
 
     const CellSwitch = ({ value, row }) => {
         const [isChecked, setIsChecked] = useState(!value)

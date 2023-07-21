@@ -23,13 +23,24 @@ const renderTextField = ({ fieldProps, controllerProps }) => {
   );
 };
 
+const renderPassword = ({ fieldProps, controllerProps }) => {
+    return (
+        <Controller
+            {...controllerProps}
+            render={({ field }) => {
+                return <TextField type={"password"} fullWidth {...field} {...fieldProps} />;
+            }}
+        />
+    );
+};
+
 const renderNumber = ({ fieldProps, controllerProps }) => {
   return (
     <Controller
       {...controllerProps}
       render={({ field }) => {
         return (
-          <TextField type={"number"} fullWidth {...field} {...fieldProps} />
+          <TextField type={"number"} fullWidth {...field} {...fieldProps} disabled={fieldProps.disabled} />
         );
       }}
     />
@@ -134,6 +145,7 @@ const renderAutoComplete = ({ fieldProps, controllerProps }) => {
 
 const renderUpload = ({ fieldProps, controllerProps }) => {
   const { setValue, ...restFieldProps } = fieldProps;
+  let img = ""
   return (
     <Controller
       {...controllerProps}
@@ -141,6 +153,10 @@ const renderUpload = ({ fieldProps, controllerProps }) => {
         const handleChange = ({ target }) => {
           //Maybe call process upload or set directory files
           setValue(controllerProps.name, target.files[0]);
+             var i = document.getElementById("imgC");
+            const file = target.files[0];
+            const url = URL.createObjectURL(file);
+             i.src = url;
         };
         return (
           <FormControl fullWidth label={restFieldProps.label}>
@@ -159,6 +175,10 @@ const renderUpload = ({ fieldProps, controllerProps }) => {
               {...rest}
               {...fieldProps}
             />
+              <br />
+              <img  id="imgC" loading="lazy"
+                    style={{width: "500px",height: "500px"}}
+                    onerror="this.src='https://i.ibb.co/8sQwx76/images-q-tbn-ANd9-Gc-TE3ogc-Suv-DVe-N1iwin1a-Tlbrk2-QXSKYv-Vz7t-Sn0-LV9k7h2-L-FPu-Pndu-Ow-HIE8jc3-L.png'"/>
           </FormControl>
         );
       }}
@@ -181,6 +201,7 @@ const renderUploadImage = ({ fieldProps, controllerProps }) => {
 
 export const FIELD_TYPES = {
   TEXT: "text",
+    PASSWORD: "password",
   SELECT: "select",
   AUTOCOMPLETE: "autocomplete",
   UPLOAD: "upload",
@@ -193,6 +214,7 @@ export const FIELD_TYPES = {
 
 const FORM_MAPPING = {
   [FIELD_TYPES.TEXT]: renderTextField,
+    [FIELD_TYPES.PASSWORD]: renderPassword,
   [FIELD_TYPES.MULTILINE]: renderMultiline,
   [FIELD_TYPES.SELECT]: renderSelect,
   [FIELD_TYPES.AUTOCOMPLETE]: renderAutoComplete,

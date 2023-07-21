@@ -4,7 +4,7 @@ export const transactionCounterApi = {
 
     getAllTransactionCounter: () => {
         return  adminAxios.get(
-            `/TransactionCounter/GetAllTransactionCounters?pageIndex=0&pageSize=1000`
+            `/TransactionCounter/GetHistorytTransactionCounters?pageIndex=0&pageSize=1000`
         );
     },
 
@@ -13,7 +13,7 @@ export const transactionCounterApi = {
     },
 
     getTransactionCounterByUserName: (userName) => {
-        return adminAxios.get(`/TransactionCounter/GetTransactionCounterByUserName/${userName}`);
+        return adminAxios.get(`/TransactionCounter/GetTransactionCounterByUserName/${userName}pageIndex=0&pageSize=1000`);
     },
 
     addTransactionCounter: async (transCounter) => {

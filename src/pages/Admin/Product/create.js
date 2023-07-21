@@ -21,6 +21,7 @@ export function CreateProduct() {
     const uploadImage = (i) => {
         const data = new FormData()
         data.append("file", i.urlImage)
+        console.log(i.urlImage);
         data.append("upload_preset", "zgq4mlru")
         data.append("cloud_name","di7yhx8nt")
         fetch("https://api.cloudinary.com/v1_1/di7yhx8nt/image/upload",{

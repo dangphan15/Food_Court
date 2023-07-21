@@ -1,5 +1,5 @@
 import {Box, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
-import { useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import AppTable from "../../../components/Table";
 import { useGetProducts } from "./api/hook";
@@ -11,6 +11,7 @@ import {fill} from "@cloudinary/url-gen/actions/resize";
 import Swal from "sweetalert2";
 import Switch from "@mui/material/Switch";
 import {productApi} from "../../../api/productApi";
+import {shopApi} from "../../../api/shopApi";
 
 export function Product_list() {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ export function Product_list() {
     const CellSwitch = ({ value, row }) => {
         const [isChecked, setIsChecked] = useState(!value)
         const handleChange = (e) => {
-            const productId = row.id;
+            const productId = row.productId;
             const newChecked = e.target.checked;
             Swal.fire({
                 title: " Delete item",
@@ -64,29 +65,52 @@ export function Product_list() {
         );
     };
 
+    const RenderCellComponent = ({ value }) => {
+        const [product, setProduct] = useState(null);
+
+        useEffect(() => {
+            const fetchTransactionCounter = async () => {
+                try {
+                    const pro = await shopApi.getShopCateById(value);
+                    console.log(pro);
+                    setProduct(pro.result.name);
+                } catch (error) {
+                    console.error("Error fetching transaction counter:", error);
+                }
+            };
+
+            fetchTransactionCounter();
+        }, [value]);
+
+        if (!product) {
+            // You can return a loading state or placeholder here while waiting for the data to load
+            return <div>Loading...</div>;
+        }
+
+        return (
+            <>
+                <AppButton
+                    onClick={(e) => {
+                        navigate(`/shops/${shopId}/categories/edit/${value}`);
+                        e.stopPropagation();
+                    }}
+                    style={{ textTransform: "capitalize" }}
+                >
+                    {product}
+                </AppButton>
+            </>
+        );
+    };
+
     const columns = useMemo(() => {
         return [
             { field: "name", headerName: "Product Name", width: 200 },
             { field: "price", headerName: "Price", width: 150 },
             {
                 field: "shopCategoryId",
-                headerName: "Shop Category Id",
+                headerName: "Shop Category",
                 width: 300,
-                renderCell: ({ value }) => {
-                    return (
-                        <>
-                            <AppButton
-                                onClick={(e) => {
-                                    navigate(`/shops/${shopId}/categories/edit/${value}`);
-                                    e.stopPropagation();
-                                }}
-                                style={{ textTransform: "capitalize" }}
-                            >
-                                ${value}
-                            </AppButton>
-                        </>
-                    );
-                },
+                renderCell: RenderCellComponent,
             },
             {
                 field: "urlImage",
@@ -105,10 +129,10 @@ export function Product_list() {
                 width: 200,
                 renderCell: ({ value, row }) => {
                     return <CellSwitch value={value} row={row} />;
-                }
+                },
             },
             {
-                field: "id",
+                field: "productId",
                 headerName: "",
                 width: 200,
                 renderCell: ({ value }) => {
@@ -198,7 +222,7 @@ export function Product_list() {
                         pageSizeOptions={pageSizeOptions}
                         onPaginationModelChange={setPaginationModel}
                         paginationTotalRows={data.length}
-                        getRowId={(row) => row.id}
+                        getRowId={(row) => row.productId}
                     />
                 </Paper>
             </Grid>

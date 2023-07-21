@@ -53,28 +53,6 @@ export function CreateCard() {
             },
 
             {
-                type: FIELD_TYPES.NUMBER,
-                fieldProps: {
-                    label: "Point",
-                },
-                formProps: {
-                    name: "points",
-                    rules: {
-                        required: "required",
-                        validate: (value) => {
-                            const basePriceRule = +value <= 0;
-                            if (basePriceRule) {
-                                return "Point must bigger than or equal 0!";
-                            }
-                        },
-                    },
-                },
-                cols: {
-                    xs: 12,
-                },
-            },
-
-            {
                 type: FIELD_TYPES.DATE,
                 fieldProps: {
                     label: "Expiration Date",

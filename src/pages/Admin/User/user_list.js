@@ -1,55 +1,139 @@
-import React from "react";
-import {withRouter} from "../../../common/with-route";
-const User_list = () => {
-    return(
-        <div className="container-fluid">
+import {Box, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
+import {useEffect, useMemo, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import AppTable from "../../../components/Table";
+import { useGetUsers } from "./api/hook";
+import { AppButton } from "../../../components/Button";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
-            <h1 className="h3 mb-2 text-gray-800">Users</h1>
+export function UserList() {
+    const { data, error, loading } = useGetUsers();
+    const navigate = useNavigate();
 
-            <div className="card shadow mb-4">
-                <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                </div>
-                <div className="card-body">
-                    <div className="table-responsive">
-                        <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                            </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                            </tfoot>
-                            <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    const columns = useMemo(() => {
+        return [
+            { field: "email", headerName: "Email", width: 150 },
+            { field: "userName", headerName: "User Name", width: 100 },
+            {
+                field: "creditBalance",
+                headerName: "Credit Balance",
+                width: 100,
+            },
+            {
+                field: "point",
+                headerName: "Point",
+                width: 100,
+            },
+            {
+                field: "role",
+                headerName: "Role",
+                width: 200,
+                renderCell: ({ value }) => {
+                    return (
+                        <>
+                            {value === 0 && <Typography>Admin</Typography>}
+                            {value === 1 && <Typography>User</Typography>}
+                        </>
+                    );
+                },
+            },
+            {
+                field: "userId",
+                headerName: "",
+                width: 200,
+                renderCell: ({ value }) => {
+                    return (
+                        <>
+                            <AppButton
+                                onClick={(e) => {
+                                    navigate(`/users/edit/${value}`);
+                                    e.stopPropagation();
+                                }}
+                                style={{ textTransform: "capitalize" }}
+                            >
+                                Edit
+                            </AppButton>
+                        </>
+                    );
+                },
+            },
+        ];
+    }, []);
 
-        </div>
+    const pageSizeOptions = [5, 10, 20];
+
+    const [paginationModel, setPaginationModel] = useState({
+        page: 0,
+        pageSize: 5,
+    });
+
+
+    // Some API clients return undefined while loading
+    // Following lines are here to prevent `rowCountState` from being undefined during the loading
+
+
+    return (
+        <>
+            <Grid item variant="outlined" style={{ display: "flex" }}>
+                {/* For search & Filter */}
+                <Paper
+                    sx={{
+                        width: "100%",
+                        padding: "12px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingInline: "24px",
+                        alignItems: "center",
+                    }}
+                >
+                    <Box>
+                        <Typography variant="h5">Manage User</Typography>
+                    </Box>
+                    <Box>
+                        <AppButton
+                            variant="contained"
+                            startIcon={<AddOutlinedIcon />}
+                            onClick={() => {
+                                navigate(`/users/create`);
+                            }}
+                            style={{ textTransform: "capitalize" }}
+                        >
+                            Create
+                        </AppButton>
+                    </Box>
+                </Paper>
+            </Grid>
+            <Grid
+                item
+                sx={{ width: "100%" }}
+                variant="outlined"
+                style={{ display: "flex" }}
+            >
+                <Paper
+                    sx={{
+                        width: "100%",
+                        padding: "24px",
+                        height: "100%",
+                        marginBottom: "60px",
+                    }}
+                >
+                    <AppTable
+                        columns={columns}
+                        rows={data}
+                        {...data}
+                        pagination={true}
+                        rowCount={data.length}
+                        paginationModel={paginationModel}
+                        rowsPerPageOptions={pageSizeOptions}
+                        pageSize={pageSizeOptions[0]}
+                        pageSizeOptions={pageSizeOptions}
+                        paginationMode="client"
+                        onPaginationModelChange={setPaginationModel}
+                        paginationTotalRows={data.length}
+                        getRowId={(row) => row.userId}
+                    />
+                </Paper>
+            </Grid>
+        </>
     );
-};
-
-export default withRouter(User_list) ;
+}

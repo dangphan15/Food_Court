@@ -17,12 +17,12 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './menu';
-import {Outlet} from "react-router-dom";
+import { MainListItems, SecondaryListItems } from './menu';
+import {Outlet, useNavigate} from "react-router-dom";
 import {Dropdown} from "react-bootstrap";
 import png from "../assets/icons/user.png";
-import {useDispatch} from "react-redux";
-import {USER_LOADING_REQUEST, USER_LOGOUT_SUCCESS} from "../features/user/userSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {selectUser, USER_LOADING_REQUEST, USER_LOGOUT_SUCCESS} from "../features/user/userSlice";
 
 function Copyright(props) {
   return (
@@ -86,11 +86,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+export default function AdminLayout() {
+    const userAccount = useSelector(selectUser);
+    const navigate = useNavigate();
+    const [open, setOpen] = React.useState(true);
+    const toggleDrawer = () => {
+        setOpen(!open);
+    };
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
@@ -99,6 +101,14 @@ export default function Dashboard() {
         localStorage.removeItem("token");
         await delay(500);
         dispatch(USER_LOGOUT_SUCCESS());
+    };
+
+    const handleProfile = () => {
+        navigate(`/profile/${userAccount.userAccountInfor.UserId}`);
+    };
+
+    const handleChangePassword = () => {
+        navigate(`/changePassword/${userAccount.userAccountInfor.UserId}`);
     };
 
 
@@ -142,10 +152,13 @@ export default function Dashboard() {
                                src={png}/>
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                          <Dropdown.Item href="#/action-1">
+                          <Dropdown.Item onClick={() => handleProfile()}>
                               <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                               Profile
-                              Action
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleChangePassword()}>
+                              <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Change password
                           </Dropdown.Item>
                           <Dropdown.Item href="/" onClick={() => handleLogout()}>
                               <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -169,9 +182,11 @@ export default function Dashboard() {
                 <ChevronLeftIcon />
               </IconButton>
             </Toolbar>
-            <Divider />
+            <Divider sx={{ my: 1, border: 1 }} />
             <List component="nav">
-              {mainListItems}
+                <SecondaryListItems/>
+                <Divider sx={{ my: 1, border: 0.5 }} />
+                <MainListItems/>
             </List>
           </Drawer>
           <Box

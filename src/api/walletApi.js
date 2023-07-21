@@ -4,7 +4,7 @@ export const walletApi = {
 
     getAllWallet: () => {
         return  adminAxios.get(
-            `/Wallet/GetAllWallets?pageIndex=0&pageSize=1000`
+            `/Wallet/GetHistoryWallet?pageIndex=0&pageSize=1000`
         );
     },
 
@@ -21,7 +21,7 @@ export const walletApi = {
     },
 
     getWalletByCardId: (cardId) => {
-        return adminAxios.get(`/Wallet/GetWalletsByCardId/${cardId}`);
+        return adminAxios.get(`/Wallet/GetWalletsByCardId/${cardId}?pageIndex=0&pageSize=1000`);
     },
 
     addWallet: async (wallet) => {
@@ -47,7 +47,7 @@ export const walletApi = {
     approveWallet: async (walletId) => {
         try {
             console.log(walletId);
-            const res = await adminAxios.put(`/Wallet/ApprovedWallet/${walletId}`);
+            const res = await adminAxios.patch(`/Wallet/ApprovedWallet/${walletId}`);
             console.log(res.status);
             return res;
         } catch (error) {

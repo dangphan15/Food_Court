@@ -3,7 +3,7 @@ import adminAxios from "./AxiosAdmin";
 export const shopApi = {
     getAllShops: () => {
         return  adminAxios.get(
-            `/Shop/GetAllShops?pageIndex=0&pageSize=1000`
+            `/Shop/GetHistoryShop?pageIndex=0&pageSize=1000`
         );
     },
 
@@ -12,14 +12,18 @@ export const shopApi = {
     },
 
     getAllShopCate: () => {
-        return adminAxios.get("/ShopCategory/GetAllShopCategories");
+        return adminAxios.get("/ShopCategory/GetHistoryShopCategory?pageIndex=0&pageSize=1000");
     },
 
     getShopById: (shopId) => {
-        return adminAxios.get(`/Shop/GetShopById/${shopId}`);
+        return adminAxios.get(`/Shop/GetShopByShopId/${shopId}`);
+    },
+
+    getShopByUserId: (userId) => {
+        return adminAxios.get(`/Shop/GetShopByUserId/${userId}?pageIndex=0&pageSize=1000`);
     },
     getShopByName: (shopName) => {
-        return adminAxios.get(`/Shop/GetShopByName/${shopName}`);
+        return adminAxios.get(`/Shop/GetShopByName/${shopName}?pageIndex=0&pageSize=1000`);
     },
 
     getShopCateById: (shopCategoryId) => {
@@ -27,11 +31,11 @@ export const shopApi = {
     },
 
     getShopCateByShopId: (shopId) => {
-        return adminAxios.get(`ShopCategory/GetShopCategoriesByShopId/${shopId}`);
+        return adminAxios.get(`ShopCategory/GetShopCategoriesByShopId/${shopId}?pageIndex=0&pageSize=1000`);
     },
 
     getShopCateByName: (categoryName) => {
-        return adminAxios.get(`ShopCategory/GetShopCategoriesByName/${categoryName}`);
+        return adminAxios.get(`ShopCategory/GetShopCategoriesByName/${categoryName}?pageIndex=0&pageSize=1000`);
     },
 
     addShop: async (shop) => {

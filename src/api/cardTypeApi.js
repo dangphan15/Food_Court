@@ -4,13 +4,13 @@ export const cardTypeApi = {
 
     getAllCard: () => {
         return  adminAxios.get(
-            `/Card/GetAllCards?pageIndex=0&pageSize=1000`
+            `/Card/GetHistoryCard?pageIndex=0&pageSize=1000`
         );
     },
 
     getAllCardType: () => {
         return  adminAxios.get(
-            `/CardType/GetAllCardTypes?pageIndex=0&pageSize=1000`
+            `/CardType/GetHistoryCardType?pageIndex=0&pageSize=1000`
         );
     },
 
@@ -19,7 +19,7 @@ export const cardTypeApi = {
     },
 
     getCardByCardTypeId: (cardTypeId) => {
-        return adminAxios.get(`/Card/GetCardsByCardTypeId/${cardTypeId}`);
+        return adminAxios.get(`/Card/GetCardsByCardTypeId/${cardTypeId}?pageIndex=0&pageSize=1000`);
     },
 
     getCardTypeById: (cardTypeId) => {

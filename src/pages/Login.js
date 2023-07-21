@@ -19,7 +19,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {userApi} from "../api/userApi";
 import {getErrorMessageFromServer} from "../utils/serverUtils";
-import {Paper} from "@mui/material";
+import {Alert, Paper, Snackbar, InputAdornment, InputLabel, OutlinedInput, FormControl} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import {EyeOutlined} from "@ant-design/icons";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 function Copyright(props) {
     return (
@@ -39,48 +42,83 @@ const defaultTheme = createTheme();
 export default function Login() {
 
     const userAccount = useSelector(selectUser);
-    console.log(userAccount)
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const location = useLocation();
-    // const [alertNotLogin, setAlertNotLogin] = useState(
-    //     location.state?.alertNotLogin
-    // );
+    const [alertRegister, setAlertRegister] = useState(
+        location.state?.alertRegister!==undefined? location.state?.alertRegister:false
+    );
     const [isLoginSuccess, setIsLoginSuccess] = useState(userAccount.isloggedInSuccess);
-    const [loginErrorMessage, setLoginErrorMessage] = useState(userAccount.loginErrorMessage);
+    const [loginErrorMessage, setLoginErrorMessage] = useState("");
+    console.log(loginErrorMessage);
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (e) => {
+        e.preventDefault();
+    };
     // Submit form function
     const onSubmit = (input) => {
         console.log(input);
         const fetchUser = async () => {
+            var response;
             try {
                 dispatch(USER_LOGIN_REQUEST());
-                const response = await userApi.login(input)
+                response = await userApi.login(input)
                 localStorage.setItem("token", JSON.stringify(response.result.token));
-                dispatch(USER_LOGIN_SUCCESS(response.result.token));
-                console.log(userAccount);
+                dispatch(USER_LOGIN_SUCCESS(response.result));
+                navigate("/");
             } catch (error) {
-                const errorMessage = getErrorMessageFromServer(error);
                 setIsLoginSuccess(false);
-                dispatch(USER_LOGIN_FAIL(errorMessage));
+                setLoginErrorMessage(response.message);
+                dispatch(USER_LOGIN_FAIL(response.message));
             }
         };
         fetchUser();
     };
 
-    // console.log(user.isloggedInSuccess);
-
     // Navigate to home page and prevent going to login page after login
     useEffect(() => {
-        if (userAccount.token && userAccount.shopAccountInfor !== null) navigate("/");
-    }, [userAccount.token,userAccount]);
+        console.log(userAccount);
+        if (userAccount.token!==null && userAccount.userAccountInfor !== null) navigate("/shops");
+    }, [userAccount.token,userAccount.userAccountInfor]);
 
     useEffect(() => {
         window.scroll(0, 0);
     }, []);
 
+    const handleClose = (event, reason) => {
+        console.log(reason);
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setAlertRegister(false);
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
+            {alertRegister && (
+                <Snackbar
+                    open={alertRegister}
+                    autoHideDuration={4000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        severity="success"
+                        sx={{
+                            fontSize: "18px",
+                            right: 40,
+                            bottom: 40,
+                            position: "fixed",
+                        }}
+                    >
+                        Register success!
+                    </Alert>
+                </Snackbar>
+            )}
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 <Grid
@@ -113,7 +151,7 @@ export default function Login() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, mb:1 }}>
                         <TextField
                             {...register("email")}
                             margin="normal"
@@ -124,19 +162,37 @@ export default function Login() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            sx={{ mb:3 }}
                         />
-                        <TextField
-                            {...register("password")}
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        {!loginErrorMessage && (
+                        <FormControl fullWidth variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
+                            <OutlinedInput
+                                margin="normal"
+                                {...register("password")}
+                                fullWidth
+                                required
+                                label="Password"
+                                autoComplete="current-password"
+                                id="outlined-adornment-password"
+                                name="password"
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Password"
+                            />
+                        </FormControl>
+                        {loginErrorMessage!=="" && (
                             <div
                                 className="bg-red-100 rounded-lg mb-3 py-3 px-6 text-sm text-red-700 inline-flex items-center w-full"
                                 role="alert"
@@ -159,7 +215,7 @@ export default function Login() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/register" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

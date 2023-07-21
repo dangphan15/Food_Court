@@ -1,14 +1,13 @@
-import { Box, Button, Grid, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AppButton } from "../../../components/Button";
-import { AppForm, FIELD_TYPES } from "../../../components/Form";
+import { AppForm, } from "../../../components/Form";
 import { shopApi } from "../../../api/shopApi";
 import {useNavigate, useParams} from "react-router-dom";
 
 
 export function CreateShopCategory() {
-    const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
     const { shopId } = useParams();
     const methods = useForm({

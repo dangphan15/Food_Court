@@ -30,16 +30,16 @@ export function EditProduct() {
     const [image, setImage] = useState();
 
     const fields = useMemo(() => {
-                            return [
-                                {
-                                    type: "text",
-                                    fieldProps: {
-                                        label: "Product Name",
-                                    },
-                                    formProps: {
-                                        name: "name",
-                                        rules: {
-                                            required: "required",
+        return [
+            {
+                type: "text",
+                fieldProps: {
+                    label: "Product Name",
+                },
+                formProps: {
+                    name: "name",
+                    rules: {
+                        required: "required",
                     },
                 },
                 cols: {
@@ -70,7 +70,7 @@ export function EditProduct() {
             },
 
             {
-                type: "image_upload",
+                type: FIELD_TYPES.UPLOAD,
                 fieldProps: {
                     image: image,
                     title: "Image",
@@ -89,18 +89,39 @@ export function EditProduct() {
         ];
     }, []);
 
+    const uploadImage = (i) => {
+        console.log(i);
+        const data = new FormData()
+        data.append("file", i.urlImage)
+        console.log(i.urlImage);
+        data.append("upload_preset", "zgq4mlru")
+        data.append("cloud_name","di7yhx8nt")
+        fetch("https://api.cloudinary.com/v1_1/di7yhx8nt/image/upload",{
+            method:"post",
+            body: data
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data)
+                const product = {
+                    name : i.name,
+                    price : i.price,
+                    urlImage: data.public_id,
+                    shopCategoryId : shopCateId,
+                };
+                //const myImage = new CloudinaryImage(url, {cloudName: 'di7yhx8nt'}).resize(fill().width(300).height(300));
+                console.log(product);
+                productApi
+                    .updateProduct(productId, product)
+                    .then((res) => navigate(`/shops/${shopId}/categories/${shopCateId}/products`))
+                    .catch((err) => console.log(err));
+            })
+            .catch(err => console.log(err))
+    }
+
     //handleSubmit update it
     const onSubmit = (values) => {
-        const data = {
-            name : values.name,
-            price : values.price,
-            urlImage: image,
-            shopCategoryId : shopCateId,
-        };
-        console.log(data);
-        productApi.updateProduct(productId, data)
-            .then(() => navigate(`/shops/${shopId}/categories/${shopCateId}/products/`))
-            .catch((err) => console.log(err));
+        uploadImage(values)
     };
 
     useEffect(() => {

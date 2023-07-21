@@ -14,7 +14,6 @@ export function EditCard() {
         defaultValues: {
             cardNumber: "",
             securityCode: "",
-            points:0,
             expirationDate:"",
         },
     });
@@ -54,28 +53,6 @@ export function EditCard() {
                     name: "securityCode",
                     rules: {
                         required: "required",
-                    },
-                },
-                cols: {
-                    xs: 12,
-                },
-            },
-
-            {
-                type: FIELD_TYPES.NUMBER,
-                fieldProps: {
-                    label: "Point",
-                },
-                formProps: {
-                    name: "points",
-                    rules: {
-                        required: "required",
-                        validate: (value) => {
-                            const basePriceRule = +value <= 0;
-                            if (basePriceRule) {
-                                return "Point must bigger than or equal 0!";
-                            }
-                        },
                     },
                 },
                 cols: {

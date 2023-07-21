@@ -19,7 +19,7 @@ export function ShopCategoryList() {
     const CellSwitch = ({ value, row }) => {
         const [isChecked, setIsChecked] = useState(!value)
         const handleChange = (e) => {
-            const shopCategoryId = row.id;
+            const shopCategoryId = row.shopCategoryId;
             const newChecked = e.target.checked;
             Swal.fire({
                 title: " Delete item",
@@ -95,7 +95,7 @@ export function ShopCategoryList() {
                 }
             },
             {
-                field: "id",
+                field: "shopCategoryId",
                 headerName: "",
                 width: 200,
                 renderCell: ({ value }) => {
@@ -192,7 +192,7 @@ export function ShopCategoryList() {
                         pageSizeOptions={pageSizeOptions}
                         onPaginationModelChange={setPaginationModel}
                         paginationTotalRows={data.length}
-                        getRowId={(row) => row.id}
+                        getRowId={(row) => row.shopCategoryId}
                     />
                 </Paper>
             </Grid>

@@ -4,7 +4,7 @@ export const productApi = {
 
     getAllProducts: () => {
         return  adminAxios.get(
-            `/Product/GetAllProducts?pageIndex=0&pageSize=1000`
+            `/Product/GetHistoryProduct?pageIndex=0&pageSize=1000`
         );
     },
 
@@ -13,11 +13,11 @@ export const productApi = {
     },
 
     getProductByName: (productName) => {
-        return adminAxios.get(`/Product/GetProductsByName/${productName}`);
+        return adminAxios.get(`/Product/GetProductsByName/${productName}?pageIndex=0&pageSize=1000`);
     },
 
     getProductByCateId: (shopCategoryId) => {
-        return adminAxios.get(`/Product/GetProductsByShopCategoryId/${shopCategoryId}`);
+        return adminAxios.get(`/Product/GetProductsByShopCategoryId/${shopCategoryId}?pageIndex=0&pageSize=1000`);
     },
 
     addProduct: async (product) => {
