@@ -27,7 +27,7 @@ export function EditShop() {
     } = methods;
 
     const locations = [
-        { location: 'VN', label: 'VN' },
+        { location: 'VietNam', label: 'VietNam' },
         { location: 'UK', label: 'UK' },
         { location: 'US', label: 'US' },
         { location: 'Australia', label: 'Australia' },
