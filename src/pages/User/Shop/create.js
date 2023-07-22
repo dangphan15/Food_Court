@@ -6,9 +6,12 @@ import { AppForm, FIELD_TYPES } from "../../../components/Form";
 import { shopApi } from "../../../api/shopApi";
 import { useNavigate } from "react-router-dom";
 import {getOptions} from "../../../utils/getOptions";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../../features/user/userSlice";
 
 
 export function UserCreateShop() {
+  const user = useSelector(selectUser);
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
   const methods = useForm({
@@ -62,11 +65,9 @@ export function UserCreateShop() {
 
   const onSubmit = (values) => {
     const data = {
-      email : values.email,
-      userName : values.userName,
-      password : values.password,
       shopName : values.shopName,
-      location : values.location
+      location : values.location,
+      userId : user.userAccountInfor.UserId
     };
     shopApi
       .addShop(data)

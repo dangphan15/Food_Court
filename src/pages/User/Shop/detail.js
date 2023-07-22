@@ -9,6 +9,8 @@ import { setInitForm } from "../../../utils/setInitForm";
 import { useGetShopById } from "./api/hook";
 import {shopApi} from "../../../api/shopApi";
 import {getOptions} from "../../../utils/getOptions";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../../features/user/userSlice";
 
 export function UserEditShop() {
     const methods = useForm({
@@ -17,6 +19,7 @@ export function UserEditShop() {
             location: "",
         },
     });
+    const user = useSelector(selectUser);
     const navigate = useNavigate();
     const { shopId } = useParams();
     const { data, loading, error } = useGetShopById(shopId);
@@ -87,12 +90,14 @@ export function UserEditShop() {
     const [shop, setShop] = useState({
         shopName: data.shopName,
         location: data.location,
+        userId: user.userAccountInfor.UserId,
     });
 
     //handleSubmit update it
     const onSubmit = (values) => {
         shop.shopName = values.shopName;
         shop.location =values.location;
+        shop.userId =user.userAccountInfor.UserId;
         console.log(shop);
         shopApi.updateShop(shopId, shop)
             .then(() => navigate("/shops"))
