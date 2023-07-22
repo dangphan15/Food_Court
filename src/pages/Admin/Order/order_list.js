@@ -161,13 +161,13 @@ export function OrderList() {
                             {row.orderStatus === 2 &&
                                 <>
                                     <AppButton
-                                        onClick={() => handleApprove(row.id)}
+                                        onClick={() => handleApprove(row.orderId)}
                                         style={{ textTransform: "capitalize" }}
                                     >
                                         Approve
                                     </AppButton>
                                     <AppButton
-                                        onClick={() => handleReject(row.id)}
+                                        onClick={() => handleReject(row.orderId)}
                                         style={{ textTransform: "capitalize" }}
                                     >
                                         Reject
