@@ -47,7 +47,7 @@ export function Profile() {
             userName: input.UserName,
         };
         userApi.update(user.userAccountInfor.UserId, data)
-            .then((response) => { setMessage(response.message);})
+            .then((response) => { setMessage(response.message); })
             .catch((err) => console.log(err));
     };
 

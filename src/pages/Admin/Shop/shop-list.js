@@ -1,5 +1,5 @@
 import {Box, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
-import { useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import AppTable from "../../../components/Table";
 import { useGetShops } from "./api/hook";
@@ -10,6 +10,7 @@ import {shopApi} from "../../../api/shopApi";
 import Swal from "sweetalert2";
 import {useSelector} from "react-redux";
 import {selectUser} from "../../../features/user/userSlice";
+import {userApi} from "../../../api/userApi";
 
 export function ShopList() {
     const { data, error, loading } = useGetShops();
@@ -64,6 +65,38 @@ export function ShopList() {
             />
         );
     };
+
+    const RenderCellComponent = ({ value }) => {
+        const [product, setProduct] = useState(null);
+
+        useEffect(() => {
+            const fetchTransactionCounter = async () => {
+                try {
+                    const pro = await userApi.getUserById(value);
+                    console.log(pro);
+                    setProduct(pro.result.userName);
+                } catch (error) {
+                    console.error("Error fetching transaction counter:", error);
+                }
+            };
+
+            fetchTransactionCounter();
+        }, [value]);
+
+        if (!product) {
+            // You can return a loading state or placeholder here while waiting for the data to load
+            return <div>Loading...</div>;
+        }
+
+        return (
+            <>
+                <Typography
+                >
+                    {product}
+                </Typography>
+            </>
+        );
+    };
     const columns = useMemo(() => {
         return [
             { field: "shopName", headerName: "Shop Name", width: 300 },
@@ -75,6 +108,9 @@ export function ShopList() {
                 renderCell: ({ value, row }) => {
                     return <CellSwitch value={value} row={row} />;
                 }
+            },
+            { field: "userId", headerName: "User", width: 300,
+                renderCell:RenderCellComponent,
             },
             {
                 field: "shopId",

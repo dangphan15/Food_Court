@@ -6,7 +6,6 @@ import { AppForm, FIELD_TYPES } from "../../../components/Form";
 import { shopApi } from "../../../api/shopApi";
 import { useNavigate } from "react-router-dom";
 import {getOptions, getOptionsUser} from "../../../utils/getOptions";
-import {useGetUsers} from "./api/hook";
 
 
 export function CreateShop() {
@@ -25,8 +24,6 @@ export function CreateShop() {
     { location: 'Australia', label: 'Australia' },
   ];
 
-  const users = useGetUsers().data;
-  console.log(users)
 
 
   const fields = useMemo(() => {

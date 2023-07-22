@@ -106,7 +106,7 @@ export const useGetShopById = (id, skipFetch = false) => {
     };
 };
 
-export const useGetUsers = (skipFetch = false) => {
+export const useGetUsersByUserId = (skipFetch = false) => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");

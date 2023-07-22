@@ -87,12 +87,14 @@ export function EditShop() {
     const [shop, setShop] = useState({
         shopName: data.shopName,
         location: data.location,
+        userId : data.userId,
     });
 
     //handleSubmit update it
     const onSubmit = (values) => {
         shop.shopName = values.shopName;
         shop.location =values.location;
+        shop.userId = data.userId;
         console.log(shop);
         shopApi.updateShop(shopId, shop)
             .then(() => navigate("/shops"))
