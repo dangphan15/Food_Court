@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SHOP_LOADING_ALL_SUCCESS } from "../../../../features/shop/shopSlice";
 import {shopApi} from "../../../../api/shopApi";
+import {userApi} from "../../../../api/userApi";
 
 export const useGetShops = (skipFetch = false) => {
     const [shops, setShops] = useState([]);
@@ -100,6 +101,50 @@ export const useGetShopById = (id, skipFetch = false) => {
 
     return {
         data: shopItem,
+        loading,
+        error,
+    };
+};
+
+export const useGetUsers = (skipFetch = false) => {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [option, setOption] = useState([])
+
+    const getAllUsers = async () => {
+        setLoading(true);
+        try {
+            const response = await userApi.getAllUsers();
+            console.log(response)
+            if(response.result !== null){
+                setUsers(response.result.items);
+            }
+            if (users) {
+                const list=response.result.items.map(row => {
+                    const data = {
+                        label : row.userName,
+                        userId: row.userId,
+                    }
+                    return data;
+                });
+                setOption(list)
+            }
+        } catch (error) {
+            console.log(error);
+            setError("Internal Server Error");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!skipFetch) {
+            getAllUsers();
+        }
+    }, []);
+    return {
+        data: option,
         loading,
         error,
     };

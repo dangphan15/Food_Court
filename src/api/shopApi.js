@@ -39,6 +39,7 @@ export const shopApi = {
     },
 
     addShop: async (shop) => {
+        console.log(shop)
         try {
             const res = await adminAxios.post(`/Shop/CreateShop`, shop);
             return res;

@@ -1,11 +1,12 @@
 import { Box, Button, Grid, Paper, Typography } from "@mui/material";
-import { useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AppButton } from "../../../components/Button";
 import { AppForm, FIELD_TYPES } from "../../../components/Form";
 import { shopApi } from "../../../api/shopApi";
 import { useNavigate } from "react-router-dom";
-import {getOptions} from "../../../utils/getOptions";
+import {getOptions, getOptionsUser} from "../../../utils/getOptions";
+import {useGetUsers} from "./api/hook";
 
 
 export function CreateShop() {
@@ -23,6 +24,10 @@ export function CreateShop() {
     { location: 'US', label: 'US' },
     { location: 'Australia', label: 'Australia' },
   ];
+
+  const users = useGetUsers().data;
+  console.log(users)
+
 
   const fields = useMemo(() => {
     return [
@@ -57,13 +62,30 @@ export function CreateShop() {
         },
       },
 
+      {
+        type: "text",
+        fieldProps: {
+          label: "User Id",
+        },
+        formProps: {
+          name: "userId",
+          rules: {
+            required: "required",
+          },
+        },
+        cols: {
+          xs: 12,
+        },
+      },
+
     ];
   }, []);
 
   const onSubmit = (values) => {
     const data = {
       shopName : values.shopName,
-      location : values.location
+      location : values.location,
+      userId : values.userId
     };
     shopApi
       .addShop(data)
