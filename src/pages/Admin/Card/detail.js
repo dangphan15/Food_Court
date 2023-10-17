@@ -83,14 +83,14 @@ export function EditCard() {
 
     //handleSubmit update it
     const onSubmit = (values) => {
-        const data = {
+        const card = {
             cardNumber: values.cardNumber,
             securityCode: values.securityCode,
-            points:values.points,
             expirationDate:values.expirationDate,
+            cardTypeId: data.cardTypeId,
         };
         console.log(data);
-        cardTypeApi.updateCard(cardId, data)
+        cardTypeApi.updateCard(cardId, card)
             .then(() => navigate("/cards"))
             .catch((err) => console.log(err));
     };

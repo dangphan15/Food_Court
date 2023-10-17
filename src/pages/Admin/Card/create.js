@@ -53,12 +53,12 @@ export function CreateCard() {
             },
 
             {
-                type: FIELD_TYPES.DATE,
+                type: "text",
                 fieldProps: {
-                    label: "Expiration Date",
+                    label: "Card Type Id",
                 },
                 formProps: {
-                    name: "expirationDate",
+                    name: "cardTypeId",
                     rules: {
                         required: "required",
                     },
@@ -67,6 +67,7 @@ export function CreateCard() {
                     xs: 12,
                 },
             },
+
         ];
     }, []);
 
@@ -74,8 +75,7 @@ export function CreateCard() {
         const data = {
             cardNumber: values.cardNumber,
             securityCode: values.securityCode,
-            points:values.points,
-            expirationDate:values.expirationDate,
+            cardTypeId: values.cardTypeId,
         };
         console.log(data);
         cardTypeApi.addCart(data)

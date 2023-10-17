@@ -24,14 +24,14 @@ const MainListItems = () => {
                 </ListItemIcon>
                 <ListItemText primary="Shop" />
             </ListItemButton>
-            <ListItemButton href={"/orders"}>
-                <ListItemIcon>
-                    <ReceiptLongIcon />
-                </ListItemIcon>
-                <ListItemText primary="Order" />
-            </ListItemButton>
             {user.userAccountInfor.Role === "Admin" &&
                 <>
+                    <ListItemButton href={"/orders"}>
+                        <ListItemIcon>
+                            <ReceiptLongIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Order" />
+                    </ListItemButton>
                     <ListItemButton href={"/transCounters"}>
                         <ListItemIcon>
                             <AccountBalanceIcon />

@@ -29,6 +29,6 @@ export const convertPriceToString = (price) => {
 };
 
 export const convertMsToDate = (time) => {
-  var date = new Date(time);
+  const date = new Date(time);
   return date.toLocaleDateString("en-US");
 };
